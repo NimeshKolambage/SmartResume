@@ -1,19 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Professional CV Resume Builder</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>
+      // Apply theme from query parameter or localStorage
+      (function() {
+        const params = new URLSearchParams(window.location.search);
+        const themeParam = params.get('theme');
+        const savedTheme = localStorage.getItem('theme');
+        let theme = 'light';
+        
+        if (themeParam && (themeParam === 'dark' || themeParam === 'light')) {
+          theme = themeParam;
+        } else if (savedTheme) {
+          theme = savedTheme;
+        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          theme = 'dark';
+        }
+        
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+      })();
+    </script>
 </head>
 <body>
     <div class="app-container">
-        <!-- Header -->
-        <header class="app-header">
-            <h1>CV Resume Builder</h1>
-            <p>Create a professional resume with live preview</p>
-        </header>
+       <header class="builder-nav">
+  <div class="builder-nav-inner">
+    <a class="brand" href="landing.html">
+      <span class="logo">SR</span>
+      <span>SmartResume</span>
+    </a>
+
+    <div class="builder-links">
+      <a href="landing.html#templates">Templates</a>
+      <a href="landing.html#features">Features</a>
+    </div>
+
+    <div class="builder-actions">
+      <a class="btn ghost" href="landing.html">Home</a>
+    </div>
+  </div>
+</header>
+
 
         <div class="content-wrapper">
             <!-- Left Panel: Form -->

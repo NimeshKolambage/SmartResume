@@ -1,8 +1,29 @@
 /* ============================================
    GLOBAL STYLES
    ============================================ */
+.builder-nav{
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(11,18,32,0.78);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.builder-nav-inner{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.builder-links{
+  display: flex;
+  gap: 16px;
+  color: rgba(232,238,252,0.78);
+}
+.builder-links a:hover{ color: #fff; }
+.builder-actions .btn{ padding: 8px 12px; border-radius: 12px; }
 
-* {
+* {   
     margin: 0;
     padding: 0;
     box-sizing: border-box;

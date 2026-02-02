@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartResume | CV Generator</title>
+  <link rel="stylesheet" href="landing.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="landing.html">
+        <span class="logo">SR</span>
+        <span>SmartResume</span>
+      </a>
+
+      <nav class="links" id="navLinks">
+        <a href="#features">Features</a>
+        <a href="#templates">Templates</a>
+        <a href="#how">How it works</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <div class="actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark/light mode">
+          <span class="theme-icon">🌙</span>
+        </button>
+        <a class="btn ghost" href="index.html">Open Builder</a>
+        <button class="hamburger" id="hamburger" aria-label="Open menu">☰</button>
+      </div>
+    </div>
+
+    <!-- mobile menu -->
+    <div class="mobile" id="mobileMenu">
+      <a href="#features">Features</a>
+      <a href="#templates">Templates</a>
+      <a href="#how">How it works</a>
+      <a href="#contact">Contact</a>
+      <a class="btn full" href="index.html" class="builderLink">Open Builder</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <main class="hero">
+    <div class="hero-inner">
+      <div class="hero-left">
+        <p class="badge">Free • Fast • A4 PDF</p>
+        <h1>Build a job-ready CV in minutes.</h1>
+        <p class="sub">
+          SmartResume is a simple CV Generator with live preview, templates, and one-click PDF download.
+        </p>
+ id="startBuilderBtn"
+        <div class="cta">
+          <a class="btn primary" href="index.html">Start Building</a>
+          <a class="btn ghost" href="#features">See Features</a>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <div class="num">3+</div>
+            <div class="label">Templates</div>
+          </div>
+          <div class="stat">
+            <div class="num">A4</div>
+            <div class="label">PDF Export</div>
+          </div>
+          <div class="stat">
+            <div class="num">Live</div>
+            <div class="label">Preview</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="mock">
+          <div class="mock-top">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="mock-body">
+            <div class="skeleton sidebar"></div>
+            <div class="skeleton content"></div>
+          </div>
+          <p class="mock-caption">Template Preview (Sidebar Resume)</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- FEATURES -->
+  <section class="section" id="features">
+    <div class="wrap">
+      <h2>Features</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Live Preview</h3>
+          <p>Type on the form and the resume updates instantly.</p>
+        </div>
+        <div class="card">
+          <h3>Templates</h3>
+          <p>Modern, Classic, and Dark styles with one click.</p>
+        </div>
+        <div class="card">
+          <h3>PDF Download</h3>
+          <p>Export your resume as a clean A4 PDF.</p>
+        </div>
+        <div class="card">
+          <h3>Profile Photo</h3>
+          <p>Upload a photo and show it on the sidebar template.</p>
+        </div>
+        <div class="card">
+          <h3>Local Save</h3>
+          <p>Save and load your resume using localStorage.</p>
+        </div>
+        <div class="card">
+          <h3>Responsive UI</h3>
+          <p>Works on desktop and mobile screens.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEMPLATES -->
+  <section class="section alt" id="templates">
+    <div class="wrap">
+      <h2>Templates</h2>
+      <div class="templates">
+        <div class="t-card">
+          <div class="thumb t1"></div>
+          <h3>Modern</h3>
+          <p>Clean & corporate.</p>
+        </div>
+        <div class="t-card">
+          <div class="thumb t2"></div>
+          <h3>Classic</h3>
+          <p>Traditional layout.</p>
+        </div>
+        <div class="t-card">
+          <div class="thumb t3"></div>
+          <h3>Dark</h3>
+          <p>Bold and modern.</p>
+        </div>
+      </div>
+      <div style="margin-top:14px;">
+        <a class="btn primary" href="index.html" class="builderLink">Try Templates in Builder</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW -->
+  <section class="section" id="how">
+    <div class="wrap">
+      <h2>How it works</h2>
+      <ol class="steps">
+        <li><b>Enter details</b> in the form (name, skills, experience).</li>
+        <li><b>Choose a template</b> that matches your style.</li>
+        <li><b>Download PDF</b> and submit for jobs.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer" id="contact">
+    <div class="wrap footer-inner">
+      <div>
+        <div class="brand-row">
+          <span class="logo">SR</span>
+          <b>SmartResume</b>
+        </div>
+        <p class="muted">A simple CV generator project built for learning and portfolio use.</p>
+      </div>
+      <div class="muted">
+        <div>Made by: Nivi</div>
+        <div>© <span id="year"></span> SmartResume</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+  <script src="landing.js"></script>
+
+</body>
+</html>
