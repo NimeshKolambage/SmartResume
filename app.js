@@ -1,4 +1,28 @@
 // ============================================
+// THEME MANAGEMENT
+// ============================================
+
+const htmlElement = document.documentElement;
+
+function initializeTheme() {
+  const params = new URLSearchParams(window.location.search);
+  const themeParam = params.get('theme');
+  const savedTheme = localStorage.getItem('theme');
+  let theme = 'light';
+  
+  if (themeParam && (themeParam === 'dark' || themeParam === 'light')) {
+    theme = themeParam;
+  } else if (savedTheme) {
+    theme = savedTheme;
+  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    theme = 'dark';
+  }
+  
+  htmlElement.setAttribute('data-theme', theme);
+  localStorage.setItem('theme', theme);
+}
+
+// ============================================
 // DOM ELEMENT REFERENCES
 // ============================================
 
@@ -407,6 +431,9 @@ buttons.print.addEventListener('click', printResume);
 // ============================================
 // INITIALIZATION
 // ============================================
+
+// Initialize theme first
+initializeTheme();
 
 // Auto-load saved data on page load
 window.addEventListener('load', () => {
