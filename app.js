@@ -73,9 +73,48 @@ const buttons = {
     clear: document.getElementById('clear-btn'),
 };
 
-// ============================================
-// UPDATE PREVIEW FUNCTION
-// ============================================
+// Current template
+let currentTemplate = 'modern';
+
+// Professional template elements
+const professionalElements = {
+    card: document.getElementById('professional-resume-card'),
+    name: document.getElementById('prof-name'),
+    jobTitle: document.getElementById('prof-job-title'),
+    contact: document.getElementById('prof-contact'),
+    locationText: document.getElementById('prof-location-text'),
+    emailText: document.getElementById('prof-email-text'),
+    phoneText: document.getElementById('prof-phone-text'),
+    websiteText: document.getElementById('prof-website-text'),
+    
+    // Sections
+    summary: document.getElementById('prof-summary'),
+    education: document.getElementById('prof-education'),
+    employment: document.getElementById('prof-employment'),
+    techSkills: document.getElementById('prof-tech-skills'),
+    
+    // Section containers
+    summarySection: document.getElementById('prof-summary-section'),
+    educationSection: document.getElementById('prof-education-section'),
+    employmentSection: document.getElementById('prof-employment-section'),
+    techSkillsSection: document.getElementById('prof-tech-skills-section'),
+};
+
+// Template switching
+document.querySelectorAll('.template-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.template-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentTemplate = btn.getAttribute('data-template');
+        
+        // Toggle visibility
+        document.getElementById('resume-card').style.display = currentTemplate === 'modern' ? 'grid' : 'none';
+        professionalElements.card.style.display = currentTemplate === 'professional' ? 'block' : 'none';
+        
+        // Update the appropriate template
+        updatePreview();
+    });
+});
 
 function updatePreview() {
     const fullName = formInputs.fullName.value.trim() || 'Your Name';
@@ -89,6 +128,14 @@ function updatePreview() {
     const employmentInput = formInputs.employment.value.trim();
     const educationInput = formInputs.education.value.trim();
 
+    if (currentTemplate === 'modern') {
+        updateModernTemplate(fullName, jobTitle, email, phone, location, website, summary, skillsInput, employmentInput, educationInput);
+    } else if (currentTemplate === 'professional') {
+        updateProfessionalTemplate(fullName, jobTitle, email, phone, location, website, summary, skillsInput, employmentInput, educationInput);
+    }
+}
+
+function updateModernTemplate(fullName, jobTitle, email, phone, location, website, summary, skillsInput, employmentInput, educationInput) {
     // Update profile info
     previewElements.name.textContent = fullName;
     previewElements.jobTitle.textContent = jobTitle;
@@ -439,4 +486,4 @@ initializeTheme();
 window.addEventListener('load', () => {
     autoLoadData();
     updatePreview();
-});
+})
