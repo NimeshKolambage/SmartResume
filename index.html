@@ -54,6 +54,21 @@
                 <div class="form-wrapper">
                     <h2>Your Details</h2>
 
+                    <!-- Template Selector -->
+                    <div class="form-section">
+                        <h3>Template Style</h3>
+                        <div class="template-selector">
+                            <button class="template-btn active" data-template="modern" title="Modern - Two column with sidebar">
+                                <span class="template-icon">▭▭</span>
+                                <span>Modern</span>
+                            </button>
+                            <button class="template-btn" data-template="professional" title="Professional - Centered layout">
+                                <span class="template-icon">━━</span>
+                                <span>Professional</span>
+                            </button>
+                        </div>
+                    </div>
+
                     <!-- Profile Image Section -->
                     <div class="form-section">
                         <h3>Profile Photo</h3>
@@ -153,7 +168,8 @@ Certified UX Designer - Google UX Design Certificate (2020)</textarea>
 
             <!-- Right Panel: Resume Preview -->
             <main class="preview-panel">
-                <div class="resume-card" id="resume-card">
+                <!-- Modern Template -->
+                <div class="resume-card modern-template" id="resume-card">
                     <!-- Left Sidebar -->
                     <div class="resume-sidebar">
                         <!-- Profile Image -->
@@ -225,6 +241,59 @@ Certified UX Designer - Google UX Design Certificate (2020)</textarea>
                             <h2 class="section-heading">Education</h2>
                             <div class="section-divider"></div>
                             <div id="preview-education" class="education-list"></div>
+                        </section>
+                    </div>
+                </div>
+
+                <!-- Professional Template -->
+                <div class="resume-card professional-template" id="professional-resume-card" style="display: none;">
+                    <div class="prof-header">
+                        <h1 id="prof-name" class="prof-name">YOUR NAME</h1>
+                        <p id="prof-job-title" class="prof-subtitle">YOUR PROFESSION</p>
+                        <div class="prof-divider"></div>
+                        <div id="prof-contact" class="prof-contact">
+                            <span id="prof-location-text">Location</span> | 
+                            <a id="prof-email-text" href="mailto:">email@example.com</a> | 
+                            <a id="prof-website-text" href="#" target="_blank" style="display: none;">website.com</a>
+                            <span id="prof-phone-text"> | +1 (555) 123-4567</span>
+                        </div>
+                    </div>
+
+                    <div class="prof-body">
+                        <!-- Professional Summary -->
+                        <section id="prof-summary-section" class="prof-section" style="display: none;">
+                            <h2 class="prof-section-title">PROFESSIONAL SUMMARY</h2>
+                            <p id="prof-summary" class="prof-text"></p>
+                        </section>
+
+                        <!-- Technical Skills -->
+                        <section id="prof-tech-skills-section" class="prof-section" style="display: none;">
+                            <h2 class="prof-section-title">TECHNICAL SKILLS</h2>
+                            <div id="prof-tech-skills" class="prof-tech-skills"></div>
+                        </section>
+
+                        <!-- Education -->
+                        <section id="prof-education-section" class="prof-section" style="display: none;">
+                            <h2 class="prof-section-title">EDUCATION</h2>
+                            <div id="prof-education" class="prof-items"></div>
+                        </section>
+
+                        <!-- Employment History -->
+                        <section id="prof-employment-section" class="prof-section" style="display: none;">
+                            <h2 class="prof-section-title">PROFESSIONAL EXPERIENCE</h2>
+                            <div id="prof-employment" class="prof-items"></div>
+                        </section>
+
+                        <!-- Projects -->
+                        <section id="prof-projects-section" class="prof-section" style="display: none;">
+                            <h2 class="prof-section-title">PROJECTS</h2>
+                            <div id="prof-projects" class="prof-items"></div>
+                        </section>
+
+                        <!-- Certifications -->
+                        <section id="prof-certifications-section" class="prof-section" style="display: none;">
+                            <h2 class="prof-section-title">CERTIFICATIONS</h2>
+                            <div id="prof-certifications" class="prof-items"></div>
                         </section>
                     </div>
                 </div>
