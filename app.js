@@ -699,51 +699,95 @@ function clearData() {
 // ============================================
 
 function downloadPDF() {
-    const resumeElement = document.getElementById('resume-card');
-    const fullName = formInputs.fullName.value.trim() || 'Resume';
-    const filename = `${fullName.replace(/\s+/g, '_')}_Resume.pdf`;
+    // Show loading message
+    const downloadBtn = document.getElementById('download-btn');
+    const originalText = downloadBtn.textContent;
+    downloadBtn.textContent = '⏳ Generating...';
+    downloadBtn.disabled = true;
 
-    // Add pdf-mode class to body
-    document.body.classList.add('pdf-mode');
+    try {
+        // Get the active resume element based on current template
+        let resumeElement;
+        if (currentTemplate === 'modern') {
+            resumeElement = document.getElementById('resume-card');
+        } else if (currentTemplate === 'professional') {
+            resumeElement = document.getElementById('professional-resume-card');
+        } else {
+            throw new Error('No valid template selected');
+        }
 
-    // Force layout before exporting
-    setTimeout(() => {
+        if (!resumeElement) {
+            throw new Error('Resume element not found');
+        }
+
+        const fullName = formInputs.fullName.value.trim() || 'Resume';
+        const filename = `${fullName.replace(/\s+/g, '_')}_Resume_${currentTemplate}.pdf`;
+
+        // Clone the resume element to avoid modifying original
+        const clonedElement = resumeElement.cloneNode(true);
+        
+        // Create a temporary container
+        const tempContainer = document.createElement('div');
+        tempContainer.style.position = 'absolute';
+        tempContainer.style.left = '-9999px';
+        tempContainer.style.top = '-9999px';
+        tempContainer.appendChild(clonedElement);
+        document.body.appendChild(tempContainer);
+
+        // Configure PDF options
         const options = {
-            margin: 0,
+            margin: [8, 8, 8, 8],
             filename: filename,
             image: { 
                 type: 'jpeg', 
                 quality: 0.98 
             },
             html2canvas: { 
-                scale: 2,
+                scale: 1.2,
                 useCORS: true,
+                allowTaint: true,
                 letterRendering: true,
                 backgroundColor: '#ffffff',
-                logging: false
+                logging: false,
+                windowHeight: tempContainer.scrollHeight * 1.2
             },
             jsPDF: { 
-                unit: 'pt',
+                unit: 'mm',
                 format: 'a4',
                 orientation: 'portrait',
                 compress: true
             }
         };
 
+        // Generate and save PDF
         html2pdf()
             .set(options)
-            .from(resumeElement)
+            .from(clonedElement)
             .save()
             .then(() => {
-                document.body.classList.remove('pdf-mode');
-                alert('✅ PDF downloaded successfully!');
+                // Clean up
+                document.body.removeChild(tempContainer);
+                downloadBtn.textContent = originalText;
+                downloadBtn.disabled = false;
+                alert('✅ PDF downloaded successfully!\n\nFile: ' + filename);
             })
             .catch((err) => {
-                document.body.classList.remove('pdf-mode');
+                // Clean up
+                if (tempContainer.parentNode) {
+                    document.body.removeChild(tempContainer);
+                }
+                downloadBtn.textContent = originalText;
+                downloadBtn.disabled = false;
+                
                 console.error('PDF export error:', err);
-                alert('❌ Error generating PDF. Please try again.');
+                alert('❌ Error generating PDF!\n\nPlease try:\n1. Check your internet connection\n2. Disable ad blockers\n3. Try a different browser\n4. Ensure pop-ups are allowed');
             });
-    }, 100);
+    } catch (error) {
+        downloadBtn.textContent = originalText;
+        downloadBtn.disabled = false;
+        console.error('Download error:', error);
+        alert('❌ Error: ' + error.message + '\n\nPlease fill in at least your name and try again.');
+    }
 }
 
 // ============================================
