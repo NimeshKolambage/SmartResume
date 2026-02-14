@@ -70,7 +70,7 @@
                     </div>
 
                     <!-- Profile Image Section -->
-                    <div class="form-section">
+                    <div class="form-section" id="profile-photo-section">
                         <h3>Profile Photo</h3>
                         <div class="form-group">
                             <label for="profile-image">Upload Photo (JPG/PNG):</label>
@@ -153,6 +153,39 @@ Conducted user research and usability testing to improve product features</texta
                             <label for="education">Education (one entry per line):</label>
                             <textarea id="education" rows="4" placeholder="Bachelor of Science in Computer Science - University Name (2020)">Bachelor of Science in Graphic Design - State University (2018)
 Certified UX Designer - Google UX Design Certificate (2020)</textarea>
+                        </div>
+                    </div>
+
+                    <!-- Projects Section -->
+                    <div class="form-section">
+                        <h3>Projects</h3>
+                        <div class="form-group">
+                            <label for="projects">Projects (one entry per line, use | to separate title from description):</label>
+                            <textarea id="projects" rows="4" placeholder="Project Name | Description of the project">Mobile App Design | Led the complete redesign of a mobile app, increasing user retention by 35%
+Design System | Created a comprehensive design system with 200+ components</textarea>
+                        </div>
+                    </div>
+
+                    <!-- Certifications Section -->
+                    <div class="form-section">
+                        <h3>Certifications</h3>
+                        <div class="form-group">
+                            <label for="certifications">Certifications (one per line):</label>
+                            <textarea id="certifications" rows="4" placeholder="Certification Name - Issuer">AWS Solutions Architect - Amazon Web Services
+Certified Kubernetes Administrator - CNCF</textarea>
+                        </div>
+                    </div>
+
+                    <!-- References Section -->
+                    <div class="form-section">
+                        <h3>References</h3>
+                        <div class="form-group">
+                            <label for="references">References (one entry per line):</label>
+                            <textarea id="references" rows="4" placeholder="Name, Title - Company (Phone/Email)&#10;Reference Person 2, Title - Company">John Smith, Product Manager - TechVision Inc
+Phone: (555) 123-4567 | Email: john.smith@techvision.com
+
+Sarah Johnson, Design Director - Creative Studios
+Phone: (555) 987-6543 | Email: sarah.johnson@creativestudios.com</textarea>
                         </div>
                     </div>
 
@@ -242,6 +275,13 @@ Certified UX Designer - Google UX Design Certificate (2020)</textarea>
                             <div class="section-divider"></div>
                             <div id="preview-education" class="education-list"></div>
                         </section>
+
+                        <!-- References -->
+                        <section id="references-section" class="content-section" style="display: none;">
+                            <h2 class="section-heading">References</h2>
+                            <div class="section-divider"></div>
+                            <div id="preview-references" class="references-list"></div>
+                        </section>
                     </div>
                 </div>
 
@@ -294,6 +334,12 @@ Certified UX Designer - Google UX Design Certificate (2020)</textarea>
                         <section id="prof-certifications-section" class="prof-section" style="display: none;">
                             <h2 class="prof-section-title">CERTIFICATIONS</h2>
                             <div id="prof-certifications" class="prof-items"></div>
+                        </section>
+
+                        <!-- References -->
+                        <section id="prof-references-section" class="prof-section" style="display: none;">
+                            <h2 class="prof-section-title">REFERENCES</h2>
+                            <div id="prof-references" class="prof-items"></div>
                         </section>
                     </div>
                 </div>
