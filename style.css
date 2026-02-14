@@ -1131,3 +1131,52 @@ body.pdf-mode .section-divider {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
 }
+
+/* Professional template PDF optimization */
+body.pdf-mode .professional-template {
+    max-width: 100% !important;
+    width: 794px !important;
+    min-height: 1123px !important;
+    padding: 30px 40px !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    page-break-inside: avoid !important;
+    page-break-after: avoid !important;
+}
+
+body.pdf-mode .prof-header {
+    margin-bottom: 18px !important;
+    padding-bottom: 12px !important;
+}
+
+body.pdf-mode .prof-name {
+    font-size: 22px !important;
+}
+
+body.pdf-mode .prof-subtitle {
+    font-size: 11px !important;
+}
+
+body.pdf-mode .prof-contact {
+    font-size: 11px !important;
+}
+
+body.pdf-mode .prof-body {
+    gap: 15px !important;
+}
+
+body.pdf-mode .prof-section {
+    page-break-inside: avoid !important;
+}
+
+body.pdf-mode .prof-section-title {
+    font-size: 11px !important;
+    margin-bottom: 8px !important;
+    padding-bottom: 4px !important;
+}
+
+body.pdf-mode .prof-text {
+    font-size: 11px !important;
+    line-height: 1.5 !important;
+}
