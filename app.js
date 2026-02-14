@@ -41,6 +41,9 @@ const formInputs = {
     skills: document.getElementById('skills'),
     employment: document.getElementById('employment'),
     education: document.getElementById('education'),
+    projects: document.getElementById('projects'),
+    certifications: document.getElementById('certifications'),
+    references: document.getElementById('references'),
 };
 
 const previewElements = {
@@ -59,11 +62,13 @@ const previewElements = {
     summary: document.getElementById('preview-summary'),
     employment: document.getElementById('preview-employment'),
     education: document.getElementById('preview-education'),
+    references: document.getElementById('preview-references'),
     
     // Section containers
     summarySection: document.getElementById('summary-section'),
     employmentSection: document.getElementById('employment-section'),
     educationSection: document.getElementById('education-section'),
+    referencesSection: document.getElementById('references-section'),
 };
 
 const buttons = {
@@ -92,12 +97,18 @@ const professionalElements = {
     education: document.getElementById('prof-education'),
     employment: document.getElementById('prof-employment'),
     techSkills: document.getElementById('prof-tech-skills'),
+    projects: document.getElementById('prof-projects'),
+    certifications: document.getElementById('prof-certifications'),
+    references: document.getElementById('prof-references'),
     
     // Section containers
     summarySection: document.getElementById('prof-summary-section'),
     educationSection: document.getElementById('prof-education-section'),
     employmentSection: document.getElementById('prof-employment-section'),
     techSkillsSection: document.getElementById('prof-tech-skills-section'),
+    projectsSection: document.getElementById('prof-projects-section'),
+    certificationsSection: document.getElementById('prof-certifications-section'),
+    referencesSection: document.getElementById('prof-references-section'),
 };
 
 // Template switching
@@ -110,6 +121,10 @@ document.querySelectorAll('.template-btn').forEach(btn => {
         // Toggle visibility
         document.getElementById('resume-card').style.display = currentTemplate === 'modern' ? 'grid' : 'none';
         professionalElements.card.style.display = currentTemplate === 'professional' ? 'block' : 'none';
+        
+        // Toggle profile photo section visibility based on template
+        const profilePhotoSection = document.getElementById('profile-photo-section');
+        profilePhotoSection.style.display = currentTemplate === 'modern' ? 'block' : 'none';
         
         // Update the appropriate template
         updatePreview();
@@ -127,15 +142,18 @@ function updatePreview() {
     const skillsInput = formInputs.skills.value.trim();
     const employmentInput = formInputs.employment.value.trim();
     const educationInput = formInputs.education.value.trim();
+    const projectsInput = formInputs.projects.value.trim();
+    const certificationsInput = formInputs.certifications.value.trim();
+    const referencesInput = formInputs.references.value.trim();
 
     if (currentTemplate === 'modern') {
-        updateModernTemplate(fullName, jobTitle, email, phone, location, website, summary, skillsInput, employmentInput, educationInput);
+        updateModernTemplate(fullName, jobTitle, email, phone, location, website, summary, skillsInput, employmentInput, educationInput, referencesInput);
     } else if (currentTemplate === 'professional') {
-        updateProfessionalTemplate(fullName, jobTitle, email, phone, location, website, summary, skillsInput, employmentInput, educationInput);
+        updateProfessionalTemplate(fullName, jobTitle, email, phone, location, website, summary, skillsInput, employmentInput, educationInput, projectsInput, certificationsInput, referencesInput);
     }
 }
 
-function updateModernTemplate(fullName, jobTitle, email, phone, location, website, summary, skillsInput, employmentInput, educationInput) {
+function updateModernTemplate(fullName, jobTitle, email, phone, location, website, summary, skillsInput, employmentInput, educationInput, referencesInput) {
     // Update profile info
     previewElements.name.textContent = fullName;
     previewElements.jobTitle.textContent = jobTitle;
@@ -178,6 +196,91 @@ function updateModernTemplate(fullName, jobTitle, email, phone, location, websit
     } else {
         previewElements.educationSection.style.display = 'none';
     }
+
+    // Update references
+    if (referencesInput) {
+        previewElements.referencesSection.style.display = 'block';
+        renderReferences(referencesInput);
+    } else {
+        previewElements.referencesSection.style.display = 'none';
+    }
+}
+
+function updateProfessionalTemplate(fullName, jobTitle, email, phone, location, website, summary, skillsInput, employmentInput, educationInput, projectsInput, certificationsInput, referencesInput) {
+    // Update header
+    professionalElements.name.textContent = fullName;
+    professionalElements.jobTitle.textContent = jobTitle;
+    
+    // Update contact
+    professionalElements.locationText.textContent = location;
+    professionalElements.emailText.textContent = email;
+    professionalElements.emailText.href = `mailto:${email}`;
+    professionalElements.phoneText.textContent = ` | ${phone}`;
+    
+    // Update website
+    if (website) {
+        professionalElements.websiteText.style.display = 'inline';
+        professionalElements.websiteText.href = website;
+        professionalElements.websiteText.textContent = website.replace(/^https?:\/\/(www\.)?/, '');
+    } else {
+        professionalElements.websiteText.style.display = 'none';
+    }
+    
+    // Update summary
+    if (summary) {
+        professionalElements.summarySection.style.display = 'block';
+        professionalElements.summary.textContent = summary;
+    } else {
+        professionalElements.summarySection.style.display = 'none';
+    }
+    
+    // Update technical skills
+    if (skillsInput) {
+        professionalElements.techSkillsSection.style.display = 'block';
+        renderProfessionalSkills(skillsInput);
+    } else {
+        professionalElements.techSkillsSection.style.display = 'none';
+    }
+    
+    // Update employment
+    if (employmentInput) {
+        professionalElements.employmentSection.style.display = 'block';
+        renderProfessionalEmployment(employmentInput);
+    } else {
+        professionalElements.employmentSection.style.display = 'none';
+    }
+    
+    // Update education
+    if (educationInput) {
+        professionalElements.educationSection.style.display = 'block';
+        renderProfessionalEducation(educationInput);
+    } else {
+        professionalElements.educationSection.style.display = 'none';
+    }
+
+    // Update projects
+    if (projectsInput) {
+        professionalElements.projectsSection.style.display = 'block';
+        renderProfessionalProjects(projectsInput);
+    } else {
+        professionalElements.projectsSection.style.display = 'none';
+    }
+
+    // Update certifications
+    if (certificationsInput) {
+        professionalElements.certificationsSection.style.display = 'block';
+        renderProfessionalCertifications(certificationsInput);
+    } else {
+        professionalElements.certificationsSection.style.display = 'none';
+    }
+
+    // Update references
+    if (referencesInput) {
+        professionalElements.referencesSection.style.display = 'block';
+        renderProfessionalReferences(referencesInput);
+    } else {
+        professionalElements.referencesSection.style.display = 'none';
+    }
 }
 
 // ============================================
@@ -199,17 +302,7 @@ function renderSkills(skillsStr) {
     skillsArray.forEach((skill, index) => {
         const skillItem = document.createElement('div');
         skillItem.className = 'skill-item';
-        
-        // Random skill level between 60-100%
-        const skillLevel = 60 + Math.floor(Math.random() * 41);
-        
-        skillItem.innerHTML = `
-            <span class="skill-name">${skill}</span>
-            <div class="skill-bar">
-                <div class="skill-level" style="width: ${skillLevel}%"></div>
-            </div>
-        `;
-        
+        skillItem.innerHTML = `<span class="skill-name">• ${skill}</span>`;
         previewElements.skills.appendChild(skillItem);
     });
 }
@@ -287,8 +380,207 @@ function renderEducation(educationStr) {
 }
 
 // ============================================
-// PROFILE IMAGE UPLOAD
+// PROFESSIONAL TEMPLATE RENDER FUNCTIONS
 // ============================================
+
+function renderProfessionalSkills(skillsStr) {
+    const skillsArray = skillsStr
+        .split(',')
+        .map(skill => skill.trim())
+        .filter(skill => skill.length > 0);
+
+    professionalElements.techSkills.innerHTML = '';
+
+    if (skillsArray.length === 0) {
+        return;
+    }
+
+    // Display skills as comma-separated list
+    professionalElements.techSkills.innerHTML = `<p>${skillsArray.join(' • ')}</p>`;
+}
+
+function renderProfessionalEmployment(employmentStr) {
+    const entries = employmentStr
+        .split('\n')
+        .map(entry => entry.trim())
+        .filter(entry => entry.length > 0);
+
+    professionalElements.employment.innerHTML = '';
+
+    entries.forEach(entry => {
+        const lines = entry.split('\n').map(l => l.trim());
+        
+        const employmentEntry = document.createElement('div');
+        employmentEntry.className = 'prof-item';
+        
+        let html = '';
+        
+        lines.forEach((line, index) => {
+            if (index === 0) {
+                // First line: could be "Title - Company (dates)" or just title
+                const match = line.match(/^(.+?)\s*-\s*(.+?)(?:\s*\((.+?)\))?$/);
+                if (match) {
+                    html += `<div class="prof-item-title">${match[1].trim()}</div>`;
+                    html += `<div class="prof-item-company">${match[2].trim()}${match[3] ? ` • ${match[3].trim()}` : ''}</div>`;
+                } else {
+                    html += `<div class="prof-item-title">${line}</div>`;
+                }
+            } else {
+                html += `<div class="prof-item-description">• ${line}</div>`;
+            }
+        });
+        
+        employmentEntry.innerHTML = html;
+        professionalElements.employment.appendChild(employmentEntry);
+    });
+}
+
+function renderProfessionalEducation(educationStr) {
+    const entries = educationStr
+        .split('\n')
+        .map(entry => entry.trim())
+        .filter(entry => entry.length > 0);
+
+    professionalElements.education.innerHTML = '';
+
+    entries.forEach(entry => {
+        const educationEntry = document.createElement('div');
+        educationEntry.className = 'prof-item';
+        
+        // Try to parse: "Degree - School (year)"
+        const match = entry.match(/^(.+?)\s*-\s*(.+?)(?:\s*\((.+?)\))?$/);
+        
+        let html = '';
+        if (match) {
+            html += `<div class="prof-item-title">${match[1].trim()}</div>`;
+            html += `<div class="prof-item-company">${match[2].trim()}${match[3] ? ` • ${match[3].trim()}` : ''}</div>`;
+        } else {
+            html += `<div class="prof-item-title">${entry}</div>`;
+        }
+        
+        educationEntry.innerHTML = html;
+        professionalElements.education.appendChild(educationEntry);
+    });
+}
+
+// ============================================
+// RENDER REFERENCES FUNCTIONS
+// ============================================
+
+function renderReferences(referencesStr) {
+    const entries = referencesStr
+        .split('\n')
+        .map(entry => entry.trim())
+        .filter(entry => entry.length > 0);
+
+    previewElements.references.innerHTML = '';
+
+    entries.forEach(entry => {
+        const referenceEntry = document.createElement('div');
+        referenceEntry.className = 'reference-entry';
+        
+        let html = '';
+        
+        // Try to parse: "Name, Title - Company"
+        const match = entry.match(/^(.+?),\s*(.+?)\s*-\s*(.+?)$/);
+        
+        if (match) {
+            html += `<div class="entry-title">${match[1].trim()}</div>`;
+            html += `<div class="entry-company">${match[2].trim()} at ${match[3].trim()}</div>`;
+        } else {
+            html += `<div class="entry-title">${entry}</div>`;
+        }
+        
+        // Check for contact info on additional lines
+        if (entry.includes('Phone:') || entry.includes('Email:')) {
+            html += `<div class="entry-description">${entry}</div>`;
+        }
+        
+        referenceEntry.innerHTML = html;
+        previewElements.references.appendChild(referenceEntry);
+    });
+}
+
+function renderProfessionalReferences(referencesStr) {
+    const entries = referencesStr
+        .split('\n')
+        .map(entry => entry.trim())
+        .filter(entry => entry.length > 0);
+
+    professionalElements.references.innerHTML = '';
+
+    entries.forEach(entry => {
+        const referenceEntry = document.createElement('div');
+        referenceEntry.className = 'prof-item';
+        
+        let html = '';
+        
+        // Try to parse: "Name, Title - Company"
+        const match = entry.match(/^(.+?),\s*(.+?)\s*-\s*(.+?)$/);
+        
+        if (match) {
+            html += `<div class="prof-item-title">${match[1].trim()}</div>`;
+            html += `<div class="prof-item-company">${match[2].trim()} at ${match[3].trim()}</div>`;
+        } else {
+            html += `<div class="prof-item-title">${entry}</div>`;
+        }
+        
+        referenceEntry.innerHTML = html;
+        professionalElements.references.appendChild(referenceEntry);
+    });
+}
+
+// ============================================
+// RENDER PROFESSIONAL PROJECTS
+// ============================================
+
+function renderProfessionalProjects(projectsStr) {
+    const entries = projectsStr
+        .split('\n')
+        .map(entry => entry.trim())
+        .filter(entry => entry.length > 0);
+
+    professionalElements.projects.innerHTML = '';
+
+    entries.forEach(entry => {
+        const projectEntry = document.createElement('div');
+        projectEntry.className = 'prof-project-item';
+        
+        let html = '';
+        
+        // Try to parse: "Project Name | Description"
+        if (entry.includes('|')) {
+            const [title, description] = entry.split('|').map(s => s.trim());
+            html += `<div class="prof-project-title"><strong>${title}</strong></div>`;
+            html += `<div class="prof-project-description">• ${description}</div>`;
+        } else {
+            html += `<div class="prof-project-title"><strong>${entry}</strong></div>`;
+        }
+        
+        projectEntry.innerHTML = html;
+        professionalElements.projects.appendChild(projectEntry);
+    });
+}
+
+// ============================================
+// RENDER PROFESSIONAL CERTIFICATIONS
+// ============================================
+
+function renderProfessionalCertifications(certificationsStr) {
+    const entries = certificationsStr
+        .split('\n')
+        .map(entry => entry.trim())
+        .filter(entry => entry.length > 0);
+
+    professionalElements.certifications.innerHTML = '';
+
+    entries.forEach(entry => {
+        const certEntry = document.createElement('div');
+        certEntry.className = 'prof-cert-item';
+        certEntry.innerHTML = `<div class="prof-cert-text">• ${entry}</div>`;
+        professionalElements.certifications.appendChild(certEntry);
+    });
+}
 
 formInputs.profileImage.addEventListener('change', function(e) {
     const file = e.target.files[0];
@@ -319,6 +611,9 @@ function saveData() {
         skills: formInputs.skills.value,
         employment: formInputs.employment.value,
         education: formInputs.education.value,
+        projects: formInputs.projects.value,
+        certifications: formInputs.certifications.value,
+        references: formInputs.references.value,
     };
 
     localStorage.setItem('cvResumeData', JSON.stringify(data));
@@ -350,6 +645,9 @@ function autoLoadData() {
     formInputs.skills.value = data.skills || '';
     formInputs.employment.value = data.employment || '';
     formInputs.education.value = data.education || '';
+    formInputs.projects.value = data.projects || '';
+    formInputs.certifications.value = data.certifications || '';
+    formInputs.references.value = data.references || '';
 
     if (savedImage) {
         previewElements.profileImage.src = savedImage;
@@ -378,6 +676,9 @@ function clearData() {
     formInputs.skills.value = '';
     formInputs.employment.value = '';
     formInputs.education.value = '';
+    formInputs.projects.value = '';
+    formInputs.certifications.value = '';
+    formInputs.references.value = '';
     formInputs.profileImage.value = '';
 
     // Reset image to placeholder
@@ -468,6 +769,9 @@ formInputs.summary.addEventListener('input', updatePreview);
 formInputs.skills.addEventListener('input', updatePreview);
 formInputs.employment.addEventListener('input', updatePreview);
 formInputs.education.addEventListener('input', updatePreview);
+formInputs.projects.addEventListener('input', updatePreview);
+formInputs.certifications.addEventListener('input', updatePreview);
+formInputs.references.addEventListener('input', updatePreview);
 
 // Button event listeners
 buttons.save.addEventListener('click', saveData);
