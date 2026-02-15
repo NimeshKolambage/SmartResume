@@ -1,187 +1,684 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SmartResume | CV Generator</title>
-  <link rel="stylesheet" href="landing.css" />
+  <title>Spika — AI Development Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.57/build/spline-viewer.js"></script>
+  <style>
+    :root {
+      --bg: #080809;
+      --text: #ffffff;
+      --text-muted: #a0a0a8;
+      --text-tertiary: #767680;
+      --stroke-light: rgba(255, 255, 255, 0.08);
+      --stroke: rgba(255, 255, 255, 0.12);
+      --stroke-strong: rgba(255, 255, 255, 0.18);
+      --accent: #6366f1;
+      --spacing-xs: 8px;
+      --spacing-sm: 16px;
+      --spacing-md: 24px;
+      --spacing-lg: 32px;
+      --spacing-xl: 48px;
+      --spacing-2xl: 64px;
+      --nav-height: 56px;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    ::-webkit-scrollbar {
+  display: none;
+}
+
+ html {
+    scrollbar-width: none;
+  
+  }
+
+
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      overflow-x: hidden;
+       -ms-overflow-style: none;
+    }
+
+    /* ════════════════════════════════════════
+       BACKGROUND & GRID
+    ════════════════════════════════════════ */
+    .bg-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .bg-layer::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 1000px 600px at 50% 0%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse 800px 500px at 80% 50%, rgba(168, 85, 247, 0.05) 0%, transparent 55%),
+        radial-gradient(ellipse 600px 400px at 20% 80%, rgba(99, 102, 241, 0.04) 0%, transparent 60%);
+    }
+
+    .bg-layer::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.01) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px);
+      background-size: 48px 48px;
+      -webkit-mask-image: radial-gradient(ellipse 100% 80% at 50% 50%, black 10%, transparent 80%);
+      mask-image: radial-gradient(ellipse 100% 80% at 50% 50%, black 10%, transparent 80%);
+    }
+
+    /* ════════════════════════════════════════
+       NAVBAR / HEADER
+    ════════════════════════════════════════ */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--nav-height);
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--spacing-xl);
+      background:transparent;
+      
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      animation: slideDown 0.6s ease-out;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .nav-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--text);
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+    }
+
+    .nav-brand-name {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: var(--text);
+    }
+
+    .nav-center {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .nav-menu a {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 16px;
+      font-size: 13px;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .nav-menu a:hover {
+      color: var(--text);
+    }
+
+    .nav-menu a.active {
+      color: var(--text);
+      border-bottom-color: var(--accent);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      flex-shrink: 0;
+    }
+
+    .nav-theme {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--stroke);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .nav-theme:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: var(--stroke-strong);
+      color: var(--text);
+    }
+
+    .nav-theme svg {
+      width: 16px;
+      height: 16px;
+      stroke-width: 1.8;
+    }
+
+    .btn-nav {
+      height: 44px;
+      padding: 0 24px;
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid var(--stroke-strong);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .btn-nav:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: var(--stroke-strong);
+      transform: translateY(-1px);
+    }
+
+    .btn-nav:focus {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* ════════════════════════════════════════
+       HERO SECTION
+    ════════════════════════════════════════ */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      padding-top: var(--nav-height);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .hero-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-2xl);
+      align-items: center;
+      padding: var(--spacing-2xl) var(--spacing-xl);
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .hero-left {
+      animation: fadeIn 0.8s ease-out 0.1s both;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border: 1px solid var(--stroke);
+      border-radius: 100px;
+      background: rgba(99, 102, 241, 0.05);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px var(--accent);
+    }
+
+    h1 {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(40px, 6vw, 56px);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+      margin-bottom: var(--spacing-lg);
+      color: var(--text);
+    }
+
+    .hero-subtitle {
+      max-width: 560px;
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--text-muted);
+      letter-spacing: -0.2px;
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .hero-cta {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      flex-wrap: wrap;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .btn {
+      height: 44px;
+      padding: 0 28px;
+      font-size: 13px;
+      font-weight: 500;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--stroke-strong);
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .btn:focus {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .btn-primary {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: var(--stroke-strong);
+    }
+
+    .btn-primary:hover {
+      background: rgba(255, 255, 255, 0.16);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: var(--stroke);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--stroke-strong);
+      transform: translateY(-2px);
+    }
+
+    .btn-icon {
+      display: inline-block;
+      transition: transform 0.2s ease;
+    }
+
+    .btn-primary:hover .btn-icon {
+      transform: translateX(3px);
+    }
+
+    .hero-trust {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      letter-spacing: 0.3px;
+      margin-top: var(--spacing-md);
+    }
+
+    .hero-trust span {
+      display: inline-block;
+    }
+
+    .hero-trust span:not(:last-child)::after {
+      content: ' • ';
+      margin: 0 var(--spacing-xs);
+      color: var(--text-tertiary);
+    }
+
+    .hero-right {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.8s ease-out 0.2s both;
+    }
+
+    spline-viewer {
+      width: min(540px, 100%);
+      height: 540px;
+      border-radius: var(--radius-lg);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-12px);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ════════════════════════════════════════
+       FEATURES STRIP
+    ════════════════════════════════════════ */
+    .features-strip {
+      border-top: 1px solid var(--stroke-light);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--spacing-xl);
+      padding: var(--spacing-xl) var(--spacing-xl);
+      animation: fadeIn 0.8s ease-out 0.3s both;
+    }
+
+    .feature-item {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--spacing-sm);
+    }
+
+    .feature-icon {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius-md);
+      background: rgba(99, 102, 241, 0.04);
+      color: var(--accent);
+      font-size: 20px;
+    }
+
+    .feature-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: 0.3px;
+    }
+
+    .feature-desc {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      line-height: 1.5;
+    }
+
+    /* ════════════════════════════════════════
+       RESPONSIVE
+    ════════════════════════════════════════ */
+    @media (max-width: 1024px) {
+      .hero-container {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-xl);
+      }
+
+      .hero-right {
+        order: -1;
+      }
+
+      spline-viewer {
+        width: min(440px, 100%);
+        height: 440px;
+      }
+
+      .hero-left {
+        text-align: center;
+      }
+
+      .hero-cta {
+        justify-content: center;
+      }
+
+      .hero-trust {
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 0 var(--spacing-xl);
+      }
+
+      .nav-center {
+        display: none;
+      }
+
+      .nav-actions {
+        gap: 8px;
+      }
+
+      .hero-badge {
+        margin-bottom: var(--spacing-md);
+      }
+
+      h1 {
+        font-size: clamp(32px, 5vw, 44px);
+        margin-bottom: var(--spacing-md);
+      }
+
+      .hero-subtitle {
+        font-size: 15px;
+        margin-bottom: var(--spacing-md);
+      }
+
+      .btn {
+        height: 40px;
+        padding: 0 20px;
+        font-size: 12px;
+      }
+
+      spline-viewer {
+        width: min(360px, 100%);
+        height: 360px;
+      }
+
+      .features-strip {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
+        padding: var(--spacing-lg) var(--spacing-xl);
+      }
+
+      .hero-container {
+        padding: var(--spacing-xl) var(--spacing-lg);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .navbar {
+        padding: 0 var(--spacing-lg);
+        height: 48px;
+      }
+
+      .nav-brand-name {
+        display: none;
+      }
+
+      .nav-theme {
+        width: 32px;
+        height: 32px;
+      }
+
+      .btn-nav {
+        height: 40px;
+        padding: 0 16px;
+        font-size: 12px;
+      }
+
+      .hero-container {
+        padding: var(--spacing-lg) var(--spacing-lg);
+        gap: var(--spacing-lg);
+      }
+
+      .hero-badge {
+        padding: 6px 12px;
+        font-size: 11px;
+        margin-bottom: var(--spacing-md);
+      }
+
+      h1 {
+        font-size: 28px;
+        line-height: 1.2;
+        margin-bottom: var(--spacing-md);
+      }
+
+      .hero-subtitle {
+        font-size: 14px;
+        margin-bottom: var(--spacing-md);
+      }
+
+      .hero-cta {
+        gap: 8px;
+      }
+
+      .btn {
+        height: 40px;
+        padding: 0 16px;
+        font-size: 12px;
+      }
+
+      spline-viewer {
+        width: 100%;
+        height: 320px;
+      }
+
+      .features-strip {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+        padding: var(--spacing-lg);
+      }
+
+      .feature-item {
+        gap: 8px;
+      }
+
+      .feature-icon {
+        width: 40px;
+        height: 40px;
+      }
+    }
+  </style>
 </head>
 <body>
+  <div class="bg-layer" aria-hidden="true"></div>
 
-  <!-- NAVBAR -->
-  <header class="nav">
-    <div class="nav-inner">
-      <a class="brand" href="landing.html">
-        <span class="logo">SR</span>
-        <span>SmartResume</span>
-      </a>
+  <!-- Navigation -->
+  <nav class="navbar" role="navigation" aria-label="Main">
+    <a class="nav-brand" href="#home" aria-label="Spika Home">
+      <span class="nav-dot"></span>
+      <span class="nav-brand-name">Spika</span>
+    </a>
 
-      <nav class="links" id="navLinks">
+    <div class="nav-center">
+      <div class="nav-menu">
+        <a href="#home" class="active">Home</a>
+        <a href="#about">About</a>
         <a href="#features">Features</a>
-        <a href="#templates">Templates</a>
-        <a href="#how">How it works</a>
+        <a href="#faq">FAQ</a>
         <a href="#contact">Contact</a>
-      </nav>
-
-      <div class="actions">
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark/light mode">
-          <span class="theme-icon">🌙</span>
-        </button>
-        <a class="btn ghost" href="index.html">Open Builder</a>
-        <button class="hamburger" id="hamburger" aria-label="Open menu">☰</button>
       </div>
     </div>
 
-    <!-- mobile menu -->
-    <div class="mobile" id="mobileMenu">
-      <a href="#features">Features</a>
-      <a href="#templates">Templates</a>
-      <a href="#how">How it works</a>
-      <a href="#contact">Contact</a>
-      <a class="btn full" href="index.html" class="builderLink">Open Builder</a>
+    <div class="nav-actions">
+      <a class="btn-nav" href="#contact">Contact us</a>
     </div>
-  </header>
+  </nav>
 
-  <!-- HERO -->
-  <main class="hero">
-    <div class="hero-inner">
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="hero-container">
       <div class="hero-left">
-        <p class="badge">Free • Fast • A4 PDF</p>
-        <h1>Build a job-ready CV in minutes.</h1>
-        <p class="sub">
-          SmartResume is a simple CV Generator with live preview, templates, and one-click PDF download.
+        <div class="hero-badge">AI-Powered Platform</div>
+        <h1>End-to-End AI Development</h1>
+        <p class="hero-subtitle">
+          Empower your business with production-ready AI solutions. From strategy to deployment, we build intelligent systems that scale.
         </p>
- id="startBuilderBtn"
-        <div class="cta">
-          <a class="btn primary" href="index.html">Start Building</a>
-          <a class="btn ghost" href="#features">See Features</a>
+        <div class="hero-cta">
+          <button class="btn btn-primary">
+            Get in touch
+            <span class="btn-icon">→</span>
+          </button>
+          <button class="btn btn-secondary">About us</button>
         </div>
-
-        <div class="stats">
-          <div class="stat">
-            <div class="num">3+</div>
-            <div class="label">Templates</div>
-          </div>
-          <div class="stat">
-            <div class="num">A4</div>
-            <div class="label">PDF Export</div>
-          </div>
-          <div class="stat">
-            <div class="num">Live</div>
-            <div class="label">Preview</div>
-          </div>
+        <div class="hero-trust">
+          <span>Fast delivery</span>
+          <span>Secure by design</span>
+          <span>Production-ready</span>
         </div>
       </div>
 
       <div class="hero-right">
-        <div class="mock">
-          <div class="mock-top">
-            <span></span><span></span><span></span>
-          </div>
-          <div class="mock-body">
-            <div class="skeleton sidebar"></div>
-            <div class="skeleton content"></div>
-          </div>
-          <p class="mock-caption">Template Preview (Sidebar Resume)</p>
-        </div>
+        <spline-viewer url="https://prod.spline.design/crgVw-ZWyyl7KZwf/scene.splinecode" loading="lazy"></spline-viewer>
       </div>
     </div>
-  </main>
 
-  <!-- FEATURES -->
-  <section class="section" id="features">
-    <div class="wrap">
-      <h2>Features</h2>
-      <div class="grid">
-        <div class="card">
-          <h3>Live Preview</h3>
-          <p>Type on the form and the resume updates instantly.</p>
-        </div>
-        <div class="card">
-          <h3>Templates</h3>
-          <p>Modern, Classic, and Dark styles with one click.</p>
-        </div>
-        <div class="card">
-          <h3>PDF Download</h3>
-          <p>Export your resume as a clean A4 PDF.</p>
-        </div>
-        <div class="card">
-          <h3>Profile Photo</h3>
-          <p>Upload a photo and show it on the sidebar template.</p>
-        </div>
-        <div class="card">
-          <h3>Local Save</h3>
-          <p>Save and load your resume using localStorage.</p>
-        </div>
-        <div class="card">
-          <h3>Responsive UI</h3>
-          <p>Works on desktop and mobile screens.</p>
-        </div>
-      </div>
-    </div>
+    
   </section>
-
-  <!-- TEMPLATES -->
-  <section class="section alt" id="templates">
-    <div class="wrap">
-      <h2>Templates</h2>
-      <div class="templates">
-        <div class="t-card">
-          <div class="thumb t1"></div>
-          <h3>Modern</h3>
-          <p>Clean & corporate.</p>
-        </div>
-        <div class="t-card">
-          <div class="thumb t2"></div>
-          <h3>Classic</h3>
-          <p>Traditional layout.</p>
-        </div>
-        <div class="t-card">
-          <div class="thumb t3"></div>
-          <h3>Dark</h3>
-          <p>Bold and modern.</p>
-        </div>
-      </div>
-      <div style="margin-top:14px;">
-        <a class="btn primary" href="index.html" class="builderLink">Try Templates in Builder</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- HOW -->
-  <section class="section" id="how">
-    <div class="wrap">
-      <h2>How it works</h2>
-      <ol class="steps">
-        <li><b>Enter details</b> in the form (name, skills, experience).</li>
-        <li><b>Choose a template</b> that matches your style.</li>
-        <li><b>Download PDF</b> and submit for jobs.</li>
-      </ol>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer class="footer" id="contact">
-    <div class="wrap footer-inner">
-      <div>
-        <div class="brand-row">
-          <span class="logo">SR</span>
-          <b>SmartResume</b>
-        </div>
-        <p class="muted">A simple CV generator project built for learning and portfolio use.</p>
-      </div>
-      <div class="muted">
-        <div>Made by: Nivi</div>
-        <div>© <span id="year"></span> SmartResume</div>
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    // year
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
-  <script src="landing.js"></script>
 
 </body>
 </html>
