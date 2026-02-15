@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Spika — AI Development Platform</title>
+  <title>Spika — Professional Resume Builder</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -30,10 +30,103 @@
       --radius-lg: 16px;
     }
 
+    [data-theme="light"] {
+      --bg: #ffffff;
+      --text: #1a1a1a;
+      --text-muted: #666666;
+      --text-tertiary: #999999;
+      --stroke-light: rgba(0, 0, 0, 0.06);
+      --stroke: rgba(0, 0, 0, 0.12);
+      --stroke-strong: rgba(0, 0, 0, 0.18);
+    }
+
+    [data-theme="light"] .bg-layer::before {
+      background:
+        radial-gradient(ellipse 1000px 600px at 50% 0%, rgba(99, 102, 241, 0.04) 0%, transparent 50%),
+        radial-gradient(ellipse 800px 500px at 80% 50%, rgba(168, 85, 247, 0.02) 0%, transparent 55%),
+        radial-gradient(ellipse 600px 400px at 20% 80%, rgba(99, 102, 241, 0.02) 0%, transparent 60%);
+    }
+
+    [data-theme="light"] .bg-layer::after {
+      background-image:
+        linear-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+    }
+
+    [data-theme="light"] .navbar {
+      background: rgba(255, 255, 255, 0.8);
+      border-bottom-color: rgba(0, 0, 0, 0.06);
+    }
+
+    [data-theme="light"] .btn-nav {
+      background: rgba(0, 0, 0, 0.06);
+      border-color: rgba(0, 0, 0, 0.12);
+    }
+
+    [data-theme="light"] .btn-nav:hover {
+      background: rgba(0, 0, 0, 0.1);
+    }
+
+    [data-theme="light"] .hero-badge {
+      background: rgba(99, 102, 241, 0.08);
+      border-color: rgba(0, 0, 0, 0.1);
+    }
+
+    [data-theme="light"] .btn {
+      border-color: rgba(0, 0, 0, 0.15);
+    }
+
+    [data-theme="light"] .btn-primary {
+      background: rgba(99, 102, 241, 0.1);
+      border-color: rgba(99, 102, 241, 0.3);
+      color: #1a1a1a;
+    }
+
+    [data-theme="light"] .btn-primary:hover {
+      background: rgba(99, 102, 241, 0.15);
+    }
+
+    [data-theme="light"] .btn-secondary {
+      background: rgba(0, 0, 0, 0.04);
+      border-color: rgba(0, 0, 0, 0.1);
+    }
+
+    [data-theme="light"] .btn-secondary:hover {
+      background: rgba(0, 0, 0, 0.08);
+    }
+
+    [data-theme="light"] .features-strip {
+      border-top-color: rgba(0, 0, 0, 0.06);
+    }
+
+    [data-theme="light"] .feature-icon {
+      background: rgba(99, 102, 241, 0.06);
+      border-color: rgba(0, 0, 0, 0.1);
+    }
+    /* spline badge hide */
+.spline-watermark,
+a[href*="spline.design"] {
+  display: none !important;
+}
+iframe + div {
+  display: none !important;
+}
+
+.spline-wrap a {
+  display: none !important;
+}
+
+
+
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+    }
+
+    html {
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
     ::-webkit-scrollbar {
   display: none;
@@ -92,7 +185,7 @@
     ════════════════════════════════════════ */
     .navbar {
       position: fixed;
-      top: 0;
+      top: 10px;
       left: 0;
       right: 0;
       height: var(--nav-height);
@@ -128,8 +221,8 @@
     }
 
     .nav-dot {
-      width: 8px;
-      height: 8px;
+      width: 20px;
+      height: 20px;
       border-radius: 50%;
       background: var(--text);
       box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
@@ -645,7 +738,17 @@
     </div>
 
     <div class="nav-actions">
+<<<<<<< HEAD
+      <button class="nav-theme" aria-label="Toggle theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <circle cx="12" cy="12" r="4.5"></circle>
+          <path d="M12 2v4m0 12v4M4.22 4.22l2.83 2.83m5.9 5.9l2.83 2.83M2 12h4m12 0h4M4.22 19.78l2.83-2.83m5.9-5.9l2.83-2.83"></path>
+        </svg>
+      </button>
+      <a class="btn-nav" href="#build">Start Free</a>
+=======
       <a class="btn-nav" href="#contact">Contact us</a>
+>>>>>>> 4d3e56abbd5bd85916a825799c8755f33462464f
     </div>
   </nav>
 
@@ -653,22 +756,22 @@
   <section class="hero" id="home">
     <div class="hero-container">
       <div class="hero-left">
-        <div class="hero-badge">AI-Powered Platform</div>
-        <h1>End-to-End AI Development</h1>
+        <div class="hero-badge">Build Your Perfect Resume</div>
+        <h1>Create Your Professional Resume in Minutes</h1>
         <p class="hero-subtitle">
-          Empower your business with production-ready AI solutions. From strategy to deployment, we build intelligent systems that scale.
+          Choose from professionally designed templates, fill in your information, and download a polished PDF ready to impress employers.
         </p>
         <div class="hero-cta">
           <button class="btn btn-primary">
-            Get in touch
+            Start Building
             <span class="btn-icon">→</span>
           </button>
-          <button class="btn btn-secondary">About us</button>
+          <button class="btn btn-secondary">View Templates</button>
         </div>
         <div class="hero-trust">
-          <span>Fast delivery</span>
-          <span>Secure by design</span>
-          <span>Production-ready</span>
+          <span>Templates available</span>
+          <span>ATS-Optimized</span>
+          <span>PDF Ready</span>
         </div>
       </div>
 
@@ -677,8 +780,38 @@
       </div>
     </div>
 
-    
+   
   </section>
+
+  <script>
+    // Theme Toggle
+    const themeBtn = document.querySelector('.nav-theme');
+    const html = document.documentElement;
+    
+    // Load saved theme or default to dark
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    html.setAttribute('data-theme', savedTheme);
+    updateThemeIcon(savedTheme);
+    
+    themeBtn.addEventListener('click', () => {
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateThemeIcon(newTheme);
+    });
+    
+    function updateThemeIcon(theme) {
+      const svg = themeBtn.querySelector('svg');
+      if (theme === 'light') {
+        // Moon icon for light mode (to switch to dark)
+        svg.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+      } else {
+        // Sun icon for dark mode (to switch to light)
+        svg.innerHTML = '<circle cx="12" cy="12" r="4.5"></circle><path d="M12 2v4m0 12v4M4.22 4.22l2.83 2.83m5.9 5.9l2.83 2.83M2 12h4m12 0h4M4.22 19.78l2.83-2.83m5.9-5.9l2.83-2.83"></path>';
+      }
+    }
+  </script>
 
 </body>
 </html>
