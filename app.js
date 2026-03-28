@@ -695,6 +695,30 @@ function clearData() {
 }
 
 // ============================================
+// ENSURE WYSIWYG - WHAT YOU SEE IS WHAT YOU GET
+// ============================================
+
+function ensureWYSIWYG(clonedElement) {
+    // Apply current theme's computed styles to ensure PDF matches preview
+    const computedStyle = window.getComputedStyle(document.documentElement);
+    const bgColor = computedStyle.getPropertyValue('--bg');
+    const textColor = computedStyle.getPropertyValue('--text');
+    
+    // Set inline styles to ensure colors render in PDF
+    clonedElement.style.setProperty('--bg', bgColor || '#ffffff');
+    clonedElement.style.setProperty('--text', textColor || '#1a1a1a');
+    
+    // Force color-adjust on all child elements
+    clonedElement.querySelectorAll('*').forEach(el => {
+        el.style.colorAdjust = 'exact';
+        el.style.webkitPrintColorAdjust = 'exact';
+        el.style.printColorAdjust = 'exact';
+    });
+    
+    return clonedElement;
+}
+
+// ============================================
 // DOWNLOAD PDF FUNCTION
 // ============================================
 
@@ -702,7 +726,7 @@ function downloadPDF() {
     // Show loading message
     const downloadBtn = document.getElementById('download-btn');
     const originalText = downloadBtn.textContent;
-    downloadBtn.textContent = '⏳ Generating...';
+    downloadBtn.textContent = '⏳ Generating PDF...';
     downloadBtn.disabled = true;
 
     try {
@@ -723,39 +747,57 @@ function downloadPDF() {
         const fullName = formInputs.fullName.value.trim() || 'Resume';
         const filename = `${fullName.replace(/\s+/g, '_')}_Resume_${currentTemplate}.pdf`;
 
-        // Clone the resume element to avoid modifying original
+        // Clone the resume element to preserve original
         const clonedElement = resumeElement.cloneNode(true);
         
-        // Create a temporary container
+        // Ensure WYSIWYG - apply current theme styles to cloned element
+        ensureWYSIWYG(clonedElement);
+        
+        // Create a temporary container for rendering
         const tempContainer = document.createElement('div');
         tempContainer.style.position = 'absolute';
         tempContainer.style.left = '-9999px';
         tempContainer.style.top = '-9999px';
+        tempContainer.style.width = '210mm';
+        tempContainer.style.height = 'auto';
+        tempContainer.style.padding = '0';
+        tempContainer.style.margin = '0';
         tempContainer.appendChild(clonedElement);
         document.body.appendChild(tempContainer);
 
-        // Configure PDF options
+        // Ensure styles are applied correctly for PDF
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = `
+            body.pdf-export * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                color-adjust: exact !important;
+            }
+        `;
+        document.head.appendChild(styleSheet);
+        document.body.classList.add('pdf-export');
+
+        // Configure PDF options for high quality
         const options = {
-            margin: [8, 8, 8, 8],
+            margin: [0, 0, 0, 0],
             filename: filename,
             image: { 
                 type: 'jpeg', 
-                quality: 0.98 
+                quality: 0.99 
             },
             html2canvas: { 
-                scale: 1.2,
+                scale: 2,
                 useCORS: true,
                 allowTaint: true,
                 letterRendering: true,
-                backgroundColor: '#ffffff',
+                backgroundColor: getComputedStyle(resumeElement).backgroundColor,
                 logging: false,
-                windowHeight: tempContainer.scrollHeight * 1.2
+                windowHeight: resumeElement.scrollHeight
             },
             jsPDF: { 
                 unit: 'mm',
                 format: 'a4',
-                orientation: 'portrait',
-                compress: true
+                orientation: 'portrait'
             }
         };
 
@@ -767,26 +809,32 @@ function downloadPDF() {
             .then(() => {
                 // Clean up
                 document.body.removeChild(tempContainer);
+                document.head.removeChild(styleSheet);
+                document.body.classList.remove('pdf-export');
                 downloadBtn.textContent = originalText;
                 downloadBtn.disabled = false;
                 alert('✅ PDF downloaded successfully!\n\nFile: ' + filename);
             })
             .catch((err) => {
-                // Clean up
+                // Clean up on error
                 if (tempContainer.parentNode) {
                     document.body.removeChild(tempContainer);
                 }
+                if (styleSheet.parentNode) {
+                    document.head.removeChild(styleSheet);
+                }
+                document.body.classList.remove('pdf-export');
                 downloadBtn.textContent = originalText;
                 downloadBtn.disabled = false;
                 
                 console.error('PDF export error:', err);
-                alert('❌ Error generating PDF!\n\nPlease try:\n1. Check your internet connection\n2. Disable ad blockers\n3. Try a different browser\n4. Ensure pop-ups are allowed');
+                alert('❌ Error generating PDF!\n\nPlease try:\n1. Make sure you filled in your name\n2. Check your internet connection\n3. Disable ad blockers if using one\n4. Try a different browser\n5. Refresh the page and try again');
             });
     } catch (error) {
         downloadBtn.textContent = originalText;
         downloadBtn.disabled = false;
         console.error('Download error:', error);
-        alert('❌ Error: ' + error.message + '\n\nPlease fill in at least your name and try again.');
+        alert('❌ Error: ' + error.message + '\n\nPlease make sure you have:\n1. Filled in at least your name\n2. Selected a template\n3. Try again');
     }
 }
 
@@ -824,14 +872,68 @@ buttons.clear.addEventListener('click', clearData);
 buttons.print.addEventListener('click', printResume);
 
 // ============================================
+// TEMPLATE PARAMETER HANDLER
+// ============================================
+
+function loadTemplateFromParameter() {
+    const params = new URLSearchParams(window.location.search);
+    const templateParam = params.get('template');
+    
+    if (templateParam) {
+        const templateName = decodeURIComponent(templateParam).toLowerCase();
+        // Map template names to modern/professional
+        let templateToUse = 'modern';
+        
+        if (templateName.includes('professional') || templateName.includes('classic') || templateName.includes('corporate')) {
+            templateToUse = 'professional';
+        } else {
+            templateToUse = 'modern';
+        }
+        
+        // Switch to the template
+        currentTemplate = templateToUse;
+        const btn = document.querySelector(`.template-btn[data-template="${templateToUse}"]`);
+        if (btn) {
+            document.querySelectorAll('.template-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // Update visibility
+            document.getElementById('resume-card').style.display = templateToUse === 'modern' ? 'grid' : 'none';
+            professionalElements.card.style.display = templateToUse === 'professional' ? 'block' : 'none';
+            
+            // Toggle profile photo section visibility
+            const profilePhotoSection = document.getElementById('profile-photo-section');
+            profilePhotoSection.style.display = templateToUse === 'modern' ? 'block' : 'none';
+        }
+    }
+}
+
+// ============================================
 // INITIALIZATION
 // ============================================
 
 // Initialize theme first
 initializeTheme();
 
+// ============================================
+// THEME TOGGLE
+// ============================================
+
+const themeToggle = document.getElementById('theme-toggle');
+
+if (themeToggle) {
+  themeToggle.addEventListener('click', () => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+  });
+}
+
 // Auto-load saved data on page load
 window.addEventListener('load', () => {
+    loadTemplateFromParameter();
     autoLoadData();
     updatePreview();
 })

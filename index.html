@@ -29,23 +29,29 @@
 </head>
 <body>
     <div class="app-container">
-       <header class="builder-nav">
-  <div class="builder-nav-inner">
-    <a class="brand" href="landing.html">
-      <span class="logo">SR</span>
-      <span>SmartResume</span>
+       <nav class="navbar" role="navigation" aria-label="Main">
+    <a class="nav-brand" href="landing.html" aria-label="SmartResume Home">
+      <span class="nav-dot"></span>
+      <span class="nav-brand-name">SmartResume</span>
     </a>
 
-    <div class="builder-links">
-      <a href="landing.html#templates">Templates</a>
-      <a href="landing.html#features">Features</a>
+    <div class="nav-center">
+      <div class="nav-menu">
+        <a href="landing.html" class="active">Home</a>
+        <a href="landing.html#features">Features</a>
+      </div>
     </div>
 
-    <div class="builder-actions">
-      <a class="btn ghost" href="landing.html">Home</a>
+    <div class="nav-actions">
+      <button class="nav-theme" id="theme-toggle" aria-label="Toggle theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="4.5"></circle>
+          <path d="M12 2v4m0 12v4M4.22 4.22l2.83 2.83m5.9 5.9l2.83 2.83M2 12h4m12 0h4M4.22 19.78l2.83-2.83m5.9-5.9l2.83-2.83"></path>
+        </svg>
+      </button>
+      <a href="landing.html" class="btn-nav">Back to Home</a>
     </div>
-  </div>
-</header>
+  </nav>
 
 
         <div class="content-wrapper">
