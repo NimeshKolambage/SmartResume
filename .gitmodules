@@ -1,0 +1,3 @@
+[submodule "SmartResume"]
+	path = SmartResume
+	url = https://github.com/NimeshKolambage/SmartResume.git
